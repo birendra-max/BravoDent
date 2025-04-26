@@ -193,7 +193,7 @@ if (isset($_POST['submit'])) {
 
 
 
-  $("#drag_drop").on("drop", function(e) {
+  /*$("#drag_drop").on("drop", function(e) {
     e.preventDefault();
     //$(this).removeClass("drag_drop");
     //var formData = new FormData();
@@ -208,7 +208,56 @@ if (isset($_POST['submit'])) {
     $('#sbtbtn').show();
     document.getElementById('total_files').setAttribute('value', files.length);
 
+  });*/
+
+
+  $("#drag_drop").on("drop", function(e) {
+    e.preventDefault();
+    // $(this).removeClass("drag_drop");
+    // var formData = new FormData();
+    var files = e.originalEvent.dataTransfer.files;
+
+    $("#table_div").append('<table class="table table-hover" style="text-align:center" id="progress_table"><thead><tr><th style="width:20% !important;">Orderid</th><th style="width:20% !important;">File</th><th style="width:10% !important;">Product Type</th><th style="width:20% !important;">Unit</th><th style="width:20% !important;">Tooth</th><th style="width:20% !important;">Message</th></tr></thead><tbody>');
+
+    for (var i = 0; i < files.length; i++) {
+      $("#progress_table").append(
+        '<tr id="tr' + i + '">' +
+        '<td style="width:20% !important">' +
+        '<input class="form-control" type="text" id="odid' + i + '" readonly>' +
+        '</td>' +
+        '<td style="width:20% !important">' +
+        '<div class="progress" id="progress_bar' + i + '" style="display:none; height:auto; padding:5px;">' +
+        '<div class="progress-bar bg-success" id="progress_bar_process' + i + '" role="progressbar" style="width:0%; height:auto; padding:5px; white-space:pre-wrap;">0%</div>' +
+        '</div>' +
+        '</td>' +
+        '<td style="width:10% !important;">' +
+        `<input class="form-control" type="text" id="p_typ${i}" readonly>` +
+        `<input type="hidden" id="p_typ${i}">` +
+        '</td>' +
+        '<td style="width:20% !important">' +
+        '<input class="form-control" type="text" id="u' + i + '" readonly>' +
+        '<input type="hidden" id="u' + i + '">' +
+        '</td>' +
+        '<td style="width:20% !important">' +
+        '<input type="text" id="t' + i + '" class="form-control" readonly>' +
+        '<input type="hidden" id="t' + i + '">' +
+        '<input type="hidden" name="orderid' + i + '" id="orderid' + i + '" class="form-control">' +
+        '</td>' +
+        '<td style="width:20% !important">' +
+        '<textarea class="form-control" name="msg' + i + '" id="msg' + i + '"></textarea>' +
+        '</td>' +
+        '</tr>'
+      );
+      uploadSingleFile(files[i], i);
+    }
+
+    $("#progress_table").append('</tbody></table>');
+
+    $('#sbtbtn').show();
+    document.getElementById('total_files').setAttribute('value', files.length);
   });
+
+
 
   // _('drag_drop').ondrop = function(event)
   // {
@@ -230,7 +279,7 @@ if (isset($_POST['submit'])) {
 
   //   }
 
-  $("#selectfile").on("click", function(e) {
+  /*$("#selectfile").on("click", function(e) {
 
     //document.getElementById("selectfile").click();
     document.getElementById("selectfile").onchange = function() {
@@ -250,7 +299,144 @@ if (isset($_POST['submit'])) {
 
     };
 
+  });*/
+
+
+  $("#selectfile").on("click", function(e) {
+
+    // document.getElementById("selectfile").click();
+    document.getElementById("selectfile").onchange = function() {
+
+      files = document.getElementById("selectfile").files;
+
+      $("#table_div").append('<table class="table table-hover" style="text-align:center" id="progress_table"><thead><tr><th style="width:20% !important;">Orderid</th><th style="width:20% !important;">File</th><th style="width:10% !important;">Product Type</th><th style="width:20% !important;">Unit</th><th style="width:20% !important;">Tooth</th><th style="width:20% !important;">Message</th></tr></thead><tbody>');
+
+      $('#sbtbtn').show();
+
+      for (var i = 0; i < files.length; i++) {
+        $("#progress_table").append(
+          '<tr id="tr' + i + '">' +
+          '<td style="width:20% !important">' +
+          '<input class="form-control" type="text" id="odid' + i + '" readonly>' +
+          '</td>' +
+          '<td style="width:20% !important">' +
+          '<div class="progress" id="progress_bar' + i + '" style="display:none; height:auto; padding:5px;">' +
+          '<div class="progress-bar bg-success" id="progress_bar_process' + i + '" role="progressbar" style="width:0%; height:auto; padding:5px; white-space:pre-wrap;">0%</div>' +
+          '</div>' +
+          '</td>' +
+          '<td style="width:10% !important;">' +
+          `<input class="form-control" type="text" id="p_typ${i}" readonly>` +
+          `<input type="hidden" id="p_typ${i}">` +
+          '</td>' +
+          '<td style="width:20% !important">' +
+          '<input class="form-control" type="text" id="u' + i + '" readonly>' +
+          '<input type="hidden" id="u' + i + '">' +
+          '</td>' +
+          '<td style="width:20% !important">' +
+          '<input type="text" id="t' + i + '" class="form-control" readonly>' +
+          '<input type="hidden" id="t' + i + '">' +
+          '<input type="hidden" name="orderid' + i + '" id="orderid' + i + '" class="form-control">' +
+          '</td>' +
+          '<td style="width:20% !important">' +
+          '<textarea class="form-control" name="msg' + i + '" id="msg' + i + '"></textarea>' +
+          '</td>' +
+          '</tr>'
+        );
+        uploadSingleFile(files[i], i);
+      }
+
+      document.getElementById('total_files').setAttribute('value', files.length);
+
+      $("#progress_table").append('</tbody></table>');
+
+    };
+
   });
+
+
+  // function uploadSingleFile(file, i) {
+  //   var ff = i;
+  //   var formData = new FormData();
+  //   formData.append("file", file);
+
+  //   document.getElementById("timed").style.display = 'block';
+
+  //   document.getElementById("cardd").style.display = 'none';
+  //   document.getElementById('tr' + i).style.display = 'table-row';
+  //   document.getElementById('progress_bar' + i).style.display = 'block';
+
+  //   var ajax_request = new XMLHttpRequest();
+
+  //   ajax_request.open("post", "upload.php");
+
+  //   ajax_request.upload.addEventListener('progress', function(event) {
+
+  //     var percent_completed = Math.round((event.loaded / event.total) * 100);
+
+  //     document.getElementById('progress_bar_process' + i + '').style.width = percent_completed + '%';
+
+  //     document.getElementById('progress_bar_process' + i + '').innerHTML = percent_completed + '% completed';
+
+  //   });
+
+  //   ajax_request.addEventListener('load', function(event) {
+
+  //     var mms = mystr = event.target.responseText;
+  //     //alert(event.target.responseText);
+  //     var myarr = mystr.split(" ");
+  //     var arrlen = myarr.length;
+  //     var tunit = myarr[arrlen - 1];
+  //     var odid = myarr[0];
+  //     var fname = "";
+  //     var tooth = "";
+
+  //     for (var i = 0; i < arrlen - 1; i++)
+  //       fname = fname + " " + myarr[i];
+
+  //     mystr = mystr.split(",");
+  //     for (var i = mystr.length - 1; i > 0; i--) {
+  //       var st = mystr[i].split(" ");
+  //       tooth = tooth + "," + st[0];
+  //     }
+
+  //     document.getElementById('tr' + ff).style.display = 'table-row';
+  //     document.getElementById('u' + ff + '').setAttribute('value', (tunit));
+  //     document.getElementById('orderid' + ff + '').setAttribute('value', (myarr[0]));
+  //     document.getElementById('odid' + ff + '').setAttribute('value', (myarr[0]));
+  //     document.getElementById('t' + ff + '').setAttribute('value', (tooth));
+
+  //     if (fname == " File is already") {
+  //       document.getElementById('progress_bar_process' + ff).innerHTML = '<div class="alert alert-danger" >' + mms + ' </div>';
+
+  //       document.getElementById('progress_bar_process' + ff).style.setProperty('background-color', 'red', 'important');
+
+  //       //document.getElementById('sbtbtn').style.display = 'none';
+  //       //document.getElementById('timed').style.display = 'none';                  
+  //       //document.getElementById('progress_table').style.display = 'none';
+  //       //alert("File is already uploaded.");                  
+  //     } else {
+  //       if (fname == " File is format is not") {
+  //         document.getElementById('progress_bar_process' + ff).innerHTML = '<div class="alert alert-danger" >' + mms + ' </div>';
+
+  //         document.getElementById('progress_bar_process' + ff).style.setProperty('background-color', 'red', 'important');
+
+  //         //document.getElementById('sbtbtn').style.display = 'none';
+  //         //document.getElementById('timed').style.display = 'none';                  
+  //         //document.getElementById('progress_table').style.display = 'none';
+  //         // alert("File format is not correct.");                  
+  //       } else {
+  //         document.getElementById('progress_bar_process' + ff).innerHTML = '<div class="" style="width:250px;">' + fname + ' </div>';
+
+  //       }
+  //     }
+  //     document.getElementById('drag_drop').style.borderColor = '#ccc';
+
+  //   });
+  //   //alert("hiello");
+
+  //   ajax_request.send(formData);
+  // }
+
 
   function uploadSingleFile(file, i) {
     var ff = i;
@@ -258,7 +444,6 @@ if (isset($_POST['submit'])) {
     formData.append("file", file);
 
     document.getElementById("timed").style.display = 'block';
-
     document.getElementById("cardd").style.display = 'none';
     document.getElementById('tr' + i).style.display = 'table-row';
     document.getElementById('progress_bar' + i).style.display = 'block';
@@ -268,69 +453,43 @@ if (isset($_POST['submit'])) {
     ajax_request.open("post", "upload.php");
 
     ajax_request.upload.addEventListener('progress', function(event) {
-
       var percent_completed = Math.round((event.loaded / event.total) * 100);
-
-      document.getElementById('progress_bar_process' + i + '').style.width = percent_completed + '%';
-
-      document.getElementById('progress_bar_process' + i + '').innerHTML = percent_completed + '% completed';
-
+      document.getElementById('progress_bar_process' + i).style.width = percent_completed + '%';
+      document.getElementById('progress_bar_process' + i).innerHTML = percent_completed + '% completed';
     });
 
     ajax_request.addEventListener('load', function(event) {
+      var responseText = event.target.responseText.trim(); // remove extra spaces
+      console.log(responseText);
 
-      var mms = mystr = event.target.responseText;
-      //alert(event.target.responseText);
-      var myarr = mystr.split(" ");
-      var arrlen = myarr.length;
-      var tunit = myarr[arrlen - 1];
-      var odid = myarr[0];
-      var fname = "";
-      var tooth = "";
+      if (responseText.includes('|')) {
+        var parts = responseText.split('|');
 
-      for (var i = 0; i < arrlen - 1; i++)
-        fname = fname + " " + myarr[i];
+        var orderId = parts[0] || '';
+        var fileName = parts[1] || '';
+        var productType = parts[2] || '';
+        var unit = parts[3] || '';
+        var tooth = parts[4] || ''; // tooth instead of quantity
+        var message = parts[5] || '';
 
-      mystr = mystr.split(",");
-      for (var i = mystr.length - 1; i > 0; i--) {
-        var st = mystr[i].split(" ");
-        tooth = tooth + "," + st[0];
-      }
+        // Fill inputs with correct values
+        document.getElementById('tr' + ff).style.display = 'table-row';
+        document.getElementById('u' + ff).setAttribute('value', unit);
+        document.getElementById('orderid' + ff).setAttribute('value', orderId);
+        document.getElementById('odid' + ff).setAttribute('value', orderId);
+        document.getElementById('t' + ff).setAttribute('value', tooth); // setting tooth
+        document.getElementById('p_typ' + ff).setAttribute('value', productType); 
+        document.getElementById('msg' + ff).setAttribute('value', message); // setting message
 
-      document.getElementById('tr' + ff).style.display = 'table-row';
-      document.getElementById('u' + ff + '').setAttribute('value', (tunit));
-      document.getElementById('orderid' + ff + '').setAttribute('value', (myarr[0]));
-      document.getElementById('odid' + ff + '').setAttribute('value', (myarr[0]));
-      document.getElementById('t' + ff + '').setAttribute('value', (tooth));
+        document.getElementById('progress_bar_process' + ff).innerHTML = '<div style="width:250px;">' + fileName + ' uploaded successfully</div>';
 
-      if (fname == " File is already") {
-        document.getElementById('progress_bar_process' + ff).innerHTML = '<div class="alert alert-danger" >' + mms + ' </div>';
-
-        document.getElementById('progress_bar_process' + ff).style.setProperty('background-color', 'red', 'important');
-
-        //document.getElementById('sbtbtn').style.display = 'none';
-        //document.getElementById('timed').style.display = 'none';                  
-        //document.getElementById('progress_table').style.display = 'none';
-        //alert("File is already uploaded.");                  
+        document.getElementById('drag_drop').style.borderColor = '#ccc';
       } else {
-        if (fname == " File is format is not") {
-          document.getElementById('progress_bar_process' + ff).innerHTML = '<div class="alert alert-danger" >' + mms + ' </div>';
-
-          document.getElementById('progress_bar_process' + ff).style.setProperty('background-color', 'red', 'important');
-
-          //document.getElementById('sbtbtn').style.display = 'none';
-          //document.getElementById('timed').style.display = 'none';                  
-          //document.getElementById('progress_table').style.display = 'none';
-          // alert("File format is not correct.");                  
-        } else {
-          document.getElementById('progress_bar_process' + ff).innerHTML = '<div class="" style="width:250px;">' + fname + ' </div>';
-
-        }
+        // Bad response
+        document.getElementById('progress_bar_process' + ff).innerHTML = '<div class="alert alert-danger">Upload failed: ' + responseText + '</div>';
+        document.getElementById('progress_bar_process' + ff).style.setProperty('background-color', 'red', 'important');
       }
-      document.getElementById('drag_drop').style.borderColor = '#ccc';
-
     });
-    //alert("hiello");
 
     ajax_request.send(formData);
   }
