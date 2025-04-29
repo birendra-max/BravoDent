@@ -40,6 +40,29 @@ function Total_row($bd, $status, $clid)
   </div><!-- /.container-fluid -->
 </div>
 <!-- Small boxes (Stat box) -->
+
+
+<!-- Feedback form  -->
+<div id="feedbackModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000;">
+  <div style="background:#fff; width:100%; max-width:700px; margin:10% auto; padding:20px; border-radius:10px; position:relative;">
+
+    <!-- Close Button -->
+    <button onclick="closeFeedbackModal()" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:25px;">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <!-- Content -->
+    <h3><i class="fas fa-comment-dots"></i> Feedback</h3>
+    <textarea id="feedbackMessage" placeholder="Enter your feedback..." style="width:100%; height:150px; margin:10px 0; padding:10px;"></textarea>
+
+    <!-- Buttons -->
+    <button onclick="sendFeedback()" style="background:#007bff; color:#fff; padding:10px 15px; border:none; border-radius:4px;">
+      <i class="fas fa-paper-plane"></i> Send Feedback
+    </button>
+  </div>
+</div>
+
+
 <div class="row">
 
   <div class="col-lg-3 col-6">
@@ -315,7 +338,7 @@ function Total_row($bd, $status, $clid)
             $cc = 0;
             $resulth = mysqli_query($bd, "SELECT * FROM orders  WHERE clientid='$em' and STR_TO_DATE(created_at, '%d-%b-%Y') >= CURDATE() - INTERVAL 7 DAY");
             while ($rowh = mysqli_fetch_array($resulth)) {
-                $cc++;
+              $cc++;
             }
             echo $cc;
             ?>
@@ -328,4 +351,61 @@ function Total_row($bd, $status, $clid)
     </a>
   </div>
 
+  <div class="col-lg-3 col-6">
+    <a onclick="openFeedbackModal()" style="cursor:pointer;">
+      <div class="info-box">
+        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-comment"></i>
+        </span>
+
+        <div class="info-box-content">
+          <span onclick="" class="info-box-text">Your feedback!</span>
+          <span class="info-box-num
+                ber">
+            <small></small>
+          </span>
+        </div>
+        <!-- /.info-box-content -->
+      </div>
+      <!-- /.info-box -->
+    </a>
+  </div>
+
+
 </div>
+
+<script>
+  function openFeedbackModal() {
+    document.getElementById('feedbackModal').style.display = "block"
+  }
+
+  function closeFeedbackModal() {
+    document.getElementById('feedbackModal').style.display = "none";
+  }
+
+  function sendFeedback() {
+    let fback = document.getElementById('feedbackMessage').value;
+    if (fback == '') {
+      alert('Plz enter your feedback !');
+    } else {
+      document.getElementById('feedbackMessage').style.display = "none";
+      fetch('fback.php', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(fback)
+        })
+        .then(response => response.text())
+        .then(data => {
+          if (data == 'Feedback received. Thank you!') {
+            alert(data);
+          }
+        })
+        .catch(err => {
+          alert("Error: " + err);
+        });
+
+
+    }
+  }
+</script>
