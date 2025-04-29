@@ -46,6 +46,7 @@ include 'header.php';
                             <th>TAT</th>
                             <th width="100">Status</th>
                             <th>Unit</th>
+                            <th>Product Type</th>
                             <th>Tooth</th>
 
                             <th>Lab Name</th>
@@ -130,6 +131,7 @@ include 'header.php';
                                                                                                             if ($row['status'] == 'progress') echo '100%'; ?>"> <?php echo $row['status'] ?> </div>
                                     </td>
                                     <td><?php echo $row['unit'] ?></td>
+                                    <td><?php echo $row['product_type'] ?></td>
                                     <td><?php echo implode("-", explode(",", $row['tooth'])) ?></td>
 
                                     <td><?php echo $row['labname'] ?></td>

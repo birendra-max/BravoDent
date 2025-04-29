@@ -71,13 +71,14 @@ if (isset($_FILES['file']['name']) and isset($_SESSION['userid'])) {
       $succes = "";
       $unit = 0;
       $t = "";
+      $orderComment = "";
+      $items = "";
       //echo $ffname;
       if (!empty($ffname) and file_exists($ffname)) {
 
         $unit = 0;
         $t = "";
         $xml2 = $xml = simplexml_load_file($ffname);
-
         foreach ($xml->Object[0]->Object as $value) {
 
           if ($value->attributes()->name == 'ToothElementList') {
