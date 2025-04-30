@@ -134,7 +134,6 @@ include 'header.php';
                 </td>
                 <td><?php echo $row['unit'] ?></td>
                 <td><?php echo $row['product_type'] ?></td>
-                <td><?php echo $row['product_type']; ?></td>
                 <td><?php echo implode("-", explode(",", $row['tooth'])) ?></td>
 
                 <td><?php echo $row['labname'] ?></td>
