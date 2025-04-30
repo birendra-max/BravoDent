@@ -220,6 +220,9 @@ if (isset($_POST['submit'])) {
     $("#table_div").append('<table class="table table-hover" style="text-align:center" id="progress_table"><thead><tr><th style="width:20% !important;">Orderid</th><th style="width:20% !important;">File</th><th style="width:10% !important;">Product Type</th><th style="width:20% !important;">Unit</th><th style="width:20% !important;">Tooth</th><th style="width:20% !important;">Message</th></tr></thead><tbody>');
 
     for (var i = 0; i < files.length; i++) {
+
+      var fileName = files[i].name;
+
       $("#progress_table").append(
         '<tr id="tr' + i + '">' +
         '<td style="width:20% !important">' +
@@ -248,7 +251,38 @@ if (isset($_POST['submit'])) {
         '</td>' +
         '</tr>'
       );
-      uploadSingleFile(files[i], i);
+
+      (function(i) { // We use an IIFE to capture the index
+        $.ajax({
+          url: 'file_exists.php',
+          type: 'POST',
+          data: {
+            fileName: fileName
+          },
+          success: function(response) {
+            var fileIndex = i; // Use the captured index for correct handling
+
+            if (response === 'exists') {
+              var confirmUpload = confirm(`${fileName} already exists. Do you want to upload it again?`);
+
+              // file_exists=`${fileName} already exists. Do you want to upload it again?`;
+
+              if (confirmUpload) {
+                uploadSingleFile(files[i], i);
+              } else {
+                window.location.reload();
+              }
+            } else {
+              uploadSingleFile(files[i], i);
+            }
+          },
+          error: function(xhr, status, error) {
+            console.log('Error checking file: ' + error);
+          }
+        });
+      })(i);
+
+      // uploadSingleFile(files[i], i);
     }
 
     $("#progress_table").append('</tbody></table>');
@@ -314,6 +348,10 @@ if (isset($_POST['submit'])) {
       $('#sbtbtn').show();
 
       for (var i = 0; i < files.length; i++) {
+
+        var fileName = files[i].name;
+
+
         $("#progress_table").append(
           '<tr id="tr' + i + '">' +
           '<td style="width:20% !important">' +
@@ -342,7 +380,39 @@ if (isset($_POST['submit'])) {
           '</td>' +
           '</tr>'
         );
-        uploadSingleFile(files[i], i);
+
+
+        (function(i) { // We use an IIFE to capture the index
+          $.ajax({
+            url: 'file_exists.php',
+            type: 'POST',
+            data: {
+              fileName: fileName
+            },
+            success: function(response) {
+              var fileIndex = i; // Use the captured index for correct handling
+
+              if (response === 'exists') {
+                var confirmUpload = confirm(`${fileName} already exists. Do you want to upload it again?`);
+
+                // file_exists=`${fileName} already exists. Do you want to upload it again?`;
+
+                if (confirmUpload) {
+                  uploadSingleFile(files[i], i);
+                } else {
+                  window.location.reload();
+                }
+              } else {
+                uploadSingleFile(files[i], i);
+              }
+            },
+            error: function(xhr, status, error) {
+              console.log('Error checking file: ' + error);
+            }
+          });
+        })(i);
+
+        // uploadSingleFile(files[i], i);
       }
 
       document.getElementById('total_files').setAttribute('value', files.length);
@@ -478,7 +548,7 @@ if (isset($_POST['submit'])) {
         document.getElementById('orderid' + ff).setAttribute('value', orderId);
         document.getElementById('odid' + ff).setAttribute('value', orderId);
         document.getElementById('t' + ff).setAttribute('value', tooth); // setting tooth
-        document.getElementById('p_typ' + ff).setAttribute('value', productType); 
+        document.getElementById('p_typ' + ff).setAttribute('value', productType);
         document.getElementById('msg' + ff).setAttribute('value', message); // setting message
 
         document.getElementById('progress_bar_process' + ff).innerHTML = '<div style="width:250px;">' + fileName + ' uploaded successfully</div>';
