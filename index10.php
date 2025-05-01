@@ -90,7 +90,12 @@ $em = $_SESSION['email'];
                     <a href="order_detail.php?orderid=<?php echo $row['orderid'] ?>"><?php echo $row['orderid'] ?></a>
                     <input type="hidden" id="redesignid<?php echo $i ?>" value="<?php echo $row['orderid'] ?>">
 
-                    <input type="hidden" id="initial<?php echo $i ?>" value="api/files/<?php echo $row['filename'] ?>">
+                    <?php
+                    $filename = $row['filename'];
+                    $encodedFilename = strpos($filename, '#') !== false ? rawurlencode($filename) : $filename;
+                    ?>
+                    <input type="hidden" id="initial<?php echo $i ?>" value="api/files/<?php echo $_SESSION['id'] . '_' . $row['orderid'] . '/' . $encodedFilename; ?>">
+
                     <?php
                     $orderid = $row['orderid'];
                     $sql2 = "SELECT * FROM orders_finished where orderid='$orderid'";

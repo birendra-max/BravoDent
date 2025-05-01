@@ -180,8 +180,12 @@ $clid = base64_decode($_GET['clientid']);
                     <input type="checkbox" name="caseid" class="caseid" id="caseid<?php echo $i ?>" value="<?php echo $i ?>">
                     <a href="order_detail.php?orderid=<?php echo $row['orderid'] ?>"><?php echo $row['orderid'] ?></a>
                     <input type="hidden" id="redesignid<?php echo $i ?>" value="<?php echo $row['orderid'] ?>">
-                    <input type="hidden" id="initial<?php echo $i ?>" value="../api/files/<?php echo $row['filename'] ?>">
 
+                    <?php
+                    $filename = $row['filename'];
+                    $encodedFilename = strpos($filename, '#') !== false ? rawurlencode($filename) : $filename;
+                    ?>
+                    <input type="hidden" id="initial<?php echo $i ?>" value="api/files/<?php echo $_SESSION['id'] . '_' . $row['orderid'] . '/' . $encodedFilename; ?>">
 
 
                     <input type="hidden" id="orderid_update<?php echo $i ?>" value="<?php echo $row['orderid'] ?>">
@@ -232,12 +236,12 @@ $clid = base64_decode($_GET['clientid']);
                                     if ($row['status'] == 'Hold') echo 'bg-danger';
                                     if ($row['status'] == 'Redesign') echo 'bg-warning';
                                     if ($row['status'] == 'progress') echo 'bg-default'; ?>" style="width:<?php if ($row['status'] == 'New') echo '100%';
-                                                                                                                                                                                                                                                                                                                                                                                                      if ($row['status'] == 'Cancel') echo '100%';
-                                                                                                                                                                                                                                                                                                                                                                                                      if ($row['status'] == 'Completed') echo '100%';
-                                                                                                                                                                                                                                                                                                                                                                                                      if ($row['status'] == 'QC Required') echo '100%';
-                                                                                                                                                                                                                                                                                                                                                                                                      if ($row['status'] == 'Hold') echo '100%';
-                                                                                                                                                                                                                                                                                                                                                                                                      if ($row['status'] == 'Redesign') echo '100%';
-                                                                                                                                                                                                                                                                                                                                                                                                      if ($row['status'] == 'progress') echo '100%'; ?>"> <?php echo $row['status'] ?> </div>
+                                                                                                          if ($row['status'] == 'Cancel') echo '100%';
+                                                                                                          if ($row['status'] == 'Completed') echo '100%';
+                                                                                                          if ($row['status'] == 'QC Required') echo '100%';
+                                                                                                          if ($row['status'] == 'Hold') echo '100%';
+                                                                                                          if ($row['status'] == 'Redesign') echo '100%';
+                                                                                                          if ($row['status'] == 'progress') echo '100%'; ?>"> <?php echo $row['status'] ?> </div>
                   </td>
                   <td><?php echo $row['unit'] ?></td>
                   <td><?php echo implode("-", explode(",", $row['tooth'])) ?></td>
