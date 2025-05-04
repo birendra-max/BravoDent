@@ -292,7 +292,7 @@ function Total_row($bd, $status)
 
           $tdate = date('d-M-Y', strtotime('-1 day', strtotime(date("d-M-Y"))));
           $cc = 0;
-          $resulth = mysqli_query($bd, "SELECT * FROM chatbox WHERE orderid not in(SELECT c1.orderid FROM chatbox as c1 , chatbox as c2 WHERE c1.orderid = c2.orderid and c1.user_type='user' and c2.user_type='BRAVODENT TEAM') and str_to_date(created_at,'%d-%b-%Y')>='2025-04-26'");
+          $resulth = mysqli_query($bd, "SELECT * FROM chatbox WHERE orderid not in(SELECT c1.orderid FROM chatbox as c1 , chatbox as c2 WHERE c1.orderid = c2.orderid and c2.user_type='BRAVODENT TEAM') and str_to_date(created_at,'%d-%b-%Y')>='2025-04-26'");
           while ($rowh = mysqli_fetch_array($resulth)) {
             $cc++;
           }
