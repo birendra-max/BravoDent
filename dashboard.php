@@ -387,7 +387,7 @@ function Total_row($bd, $status, $clid)
     if (fback == '') {
       alert('Plz enter your feedback !');
     } else {
-      document.getElementById('feedbackMessage').style.display = "none";
+      document.getElementById('feedbackModal').style.display = "none";
       fetch('fback.php', {
           method: "POST",
           headers: {
